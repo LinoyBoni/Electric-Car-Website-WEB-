@@ -8,7 +8,6 @@ export default function Car({car}) {
     
         <div className ="car-list">
             <div className ="car-item">
-                <img src="https://via.placeholder.com/150" alt="Tesla Model 3"></img>
                 <div className ="car-details">
                     <h3>{car.Car_name}</h3>
                     <label>{car.battery} kwh useable battery </label>

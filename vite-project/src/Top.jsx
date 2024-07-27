@@ -1,10 +1,9 @@
-import React from "react";
 import React, { useState, useEffect } from 'react';/////
 import axios from 'axios';////
 
 export default function Top() {
-   
-  const CarFilter = () => {
+  
+  
       const [company, setCompany] = useState('');
       const [price, setPrice] = useState('');
       const [efficiency, setEfficiency] = useState('');
@@ -17,20 +16,6 @@ export default function Top() {
       const fetchCars = () => {
           const [minPrice, maxPrice] = price ? price.split('-').map(Number) : [0, Infinity];
           const [minEfficiency, maxEfficiency] = efficiency ? efficiency.split('-').map(Number) : [0, Infinity];
-  
-          axios.get('http://localhost:3000/filterCars', {
-              params: {
-                  company,
-                  minPrice,
-                  maxPrice,
-                  minEfficiency,
-                  maxEfficiency
-              }
-          }).then(response => {
-              setCars(response.data);
-          }).catch(error => {
-              console.error('There was an error fetching the cars!', error);
-          });
       };
 
 
@@ -181,4 +166,4 @@ export default function Top() {
     </>
   );
 }
-}
+
