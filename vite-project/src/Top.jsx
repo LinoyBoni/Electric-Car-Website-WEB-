@@ -1,68 +1,88 @@
-import React, { useState, useEffect } from 'react';/////
-import axios from 'axios';////
+import React, { useState, useEffect } from 'react';
+//import axios from 'axios';
 
-export default function Top() {
-  
-  
-      const [company, setCompany] = useState('');
-      const [price, setPrice] = useState('');
-      const [efficiency, setEfficiency] = useState('');
-      const [cars, setCars] = useState([]);
-  
-      useEffect(() => {
-          fetchCars();
-      }, [company, price, efficiency]);
-  
-      const fetchCars = () => {
-          const [minPrice, maxPrice] = price ? price.split('-').map(Number) : [0, Infinity];
-          const [minEfficiency, maxEfficiency] = efficiency ? efficiency.split('-').map(Number) : [0, Infinity];
-      };
+export default function Top({setCarsList}) {
 
+//---------------------Display the select filter by company names---------------------
+const [companiesList, setCompaniesList] = useState([])
+  
+const fetchCompanies = async ()=>{
+  const response = await fetch("http://localhost:3000/allCompanies");
+  const json_response = await response.json();
+  setCompaniesList(json_response);
+
+}
+
+  useEffect(
+    ()=>{
+
+      fetchCompanies();
+
+        async function fetch_cars_list() {
+            const fechedData = await fetch("http://localhost:3000/all");
+            const newCars = await fechedData.json();
+            setCarsList(newCars);
+        }
+        fetch_cars_list();
+      
+    },[]
+  )
+  const companyChangedHandle = async (e)=>{
+    let response;
+    if(e.target.value == "all") response = await fetch(`http://localhost:3000/all`);
+    else  response = await fetch(`http://localhost:3000/companies/${e.target.value}`);
+    const json_response = await response.json();
+    setCarsList(json_response)
+  }
+const filterChangeHandler = async (e)=>{
+  const response = await fetch(`http://localhost:3000/filters/${e.target.value}`);
+    const json_response = await response.json();
+    console.log(json_response)
+    setCarsList(json_response)
+}
+
+const resetDisplay = async() =>{
+  const response = await fetch(`http://localhost:3000/all/`);
+    const json_response = await response.json();
+    console.log(json_response)
+    setCarsList(json_response)
+}
+
+  //---------------------------------------------------------------------------------------
 
   return (
     <>
-      <h1>Electric Vehicles</h1>
+      <h1>אתר לרכבים חשמליים</h1>
       <div className ="selectsRst">
         <div className ="selects">
           <div className ="allselects">
             {/*----------------------סינון כל הרכבים לפי חברה------------------------------*/}
-            <select name="company" id="company">
-              <option value="companyname">הצג רכבים לפי חברה</option>
-              <option value="battery">הצג נפח סוללה מהגבוה לנמוך</option>
+            <select onChange={companyChangedHandle} name="company" id="company">
+              <option value="all">הצג רכבים לפי חברה</option>
+              {companiesList.map(
+                ({company})=>{
+                  return <option value={`${company}`}>{`${company}`}</option>
+                })
+              }
             </select>
 
-            <div id="car-list">
-                  {cars.map(car => (
-                      <div key={car.id} className="car-item">
-                          <h3>{car.Car_name}</h3>
-                          <p>Company: {car.Company}</p>
-                          <p>Price: €{car.Price.DE}</p>
-                          <p>Efficiency: {car.Efficiency} Wh/km</p>
-                          <p>Top Speed: {car.Top_speed} km/h</p>
-                          <p>Range: {car.Range} km</p>
-                          <p>Fast Charge: {car.Fast_charge} km/h</p>
-                          <p>Acceleration: {car.acceleration}</p>
-                          <p>Battery: {car.Battery}</p>
-                      </div>
-                  ))}
-              </div>
 
             {/*---------------------------מיון כל הרכבים -----------------------------*/}
-            <select name="sort" id="sort">
+            <select onChange={filterChangeHandler} name="sort" id="sort">
+            <option value="sorting">בחר מיון</option>
               <option value="battery">הצג נפח סוללה מהגבוה לנמוך</option>
               <option value="A-Z">הצג רכבים לפי סדר א,ב</option>
-              <option value="efficiency">הצג יעילות מהגבוה לנמוך </option>
+              <option value="efficiency">הצג יעילות מהנמוך לגבוה </option>
               <option value="charge">הצג טעינה מממהירה לאיטית</option>
               <option value="price">הצג מחיר מהיקר לזול</option>
               <option value="range">מיין רכבים לפי טווח</option>
               <option value="speed">מיין רכבים מהכי מהיר להכי איטי</option>
-              <option value="acc">
-                הצג רכבים לפי זמן ההאצה הכי קצר להכי ארוך
-              </option>
+              <option value="acc">הצג רכבים לפי זמן ההאצה הכי קצר להכי ארוך</option>
             </select>
 
             {/*----------------------מיון הדגם הכי טוב לפי בחירה------------------------------*/}
-            <select name="Max" id="Max">
+            <select onChange={filterChangeHandler} name="Max" id="Max">
+            <option value="filtering">בחר סינון</option>
               <option value="MaxSpeed">הדגם המהיר ביותר</option>
               <option value="MaxAcc">הדגם בעל האצה הכי טובה</option>
               <option value="MaxEfficiency">הדגם הכי יעיל</option>
@@ -70,18 +90,16 @@ export default function Top() {
               <option value="MaxBattery">הדגם בעל נפח הסוללה הכי טוב </option>
             </select>
           </div>
-
+     
+ {/*----------------------אפס את הנתונים באמצעות כפתור-----------------------------*/}
           <div className ="rst">
-            <button type="reset">
-              איפוס
-            </button>
+            <button onClick={resetDisplay} type="reset">איפוס</button>
           </div>
         </div>
-        {/*----------------------אפס את הנתונים באמצעות כפתור-----------------------------*/}
       </div>
 
       <div className ="sliders">
-        {/*----------------------------מציג טווח יעילות----------------------------------*/}
+ {/*----------------------------מציג טווח יעילות----------------------------------*/}
         {/*<div class="row1">*/}
         <div className ="slider">
           <label>
@@ -96,7 +114,7 @@ export default function Top() {
           ></input>
         </div>
 
-        {/*--------------------------מציג טווח טעינה מהירה----------------------------------*/}
+ {/*--------------------------מציג טווח טעינה מהירה----------------------------------*/}
         <div className ="slider">
           <label>
             Fastcharge: <span id="fastchargeValue">0 - 1500 km/h</span>

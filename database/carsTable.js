@@ -11,6 +11,13 @@ async function getAllCarbyBattery({battery}) {
     return result[0];
 }
 
+//הצגת כל השמות של החברות
+async function getAllCompanyName() {
+    const result = await pool.query("SELECT DISTINCT company FROM ev_cars.cars");
+
+    return result[0];
+}
+
 //סינון לפי שם היצרן/חברה של הרכב
 async function getAllCarbyCompany({company}) {
     const result = await pool.query("SELECT * FROM cars WHERE company = ? ", 
@@ -89,8 +96,8 @@ async function getMaxCar_TopSpeed() {
 
 
 //מציג את הדגם עם זמן ההאצה הקצר ביותר מ-0 ל-100
-async function getMaxCar_Acc() {
-    const result = await pool.query("??????");
+async function getMaxCar_Acc() {//-----------------fix
+    const result = await pool.query("SELECT * FROM ev_cars.cars ORDER BY Top_speed DESC LIMIT 1");
     return result[0];
 }
 
@@ -102,7 +109,7 @@ async function getMaxCar_Efficiency() {
 
 //מציג את הדגם בעל הכי טוב
 async function getMaxCar_Range() {
-    const result = await pool.query("????????");
+    const result = await pool.query("??????");
     return result[0];
 }
 
@@ -113,7 +120,7 @@ async function getMaxCar_Battery() {
 }
 //----------------------------------CRUD-------------------------------------------------
 
-//--------------------CREATE--------------------------
+//---------------------------------CREATE-----------------------------------------
 
 //Add Car to the DB
 async function addCar({battery, company, car_name, car_name_link, efficiency, fast_charge, price, range, top_speed,acceleration}) {
@@ -124,7 +131,7 @@ async function addCar({battery, company, car_name, car_name_link, efficiency, fa
     return result[0];
 }
 
-//--------------------READ--------------------------
+//-----------------------------------READ----------------------------------------
 
 //Get All the cars
 async function getAllCars() {
@@ -140,7 +147,7 @@ async function getDetailsByCarID(id_car) {
 }
 
 
-//--------------------UPDATE--------------------------
+//---------------------------------UPDATE---------------------------------------
 
 //Update car in the DB
 async function updateCar(newCarDetailes) {
@@ -157,7 +164,7 @@ async function updateCar(newCarDetailes) {
 }
 
 
-//--------------------DELETE--------------------------
+//--------------------------------DELETE----------------------------------------
 
 //Delete car in the DB
 async function DeleteCarByID(id_car) {
@@ -170,7 +177,7 @@ async function DeleteCarByID(id_car) {
 }
 
 
-//---------------------------SORT--------------------------------
+//-------------------------------SORT------------------------------------------
 
 //Sort battery (high to low)
 async function SortBattery() {
@@ -220,8 +227,31 @@ async function SortCarsByAcc() {
     return result[0];
 }
 
-//TODO: COPY ALL FUNCTIONS TO EXPORT!!!!!
 module.exports = {getAllCars,
     SortCarsByAcc,
-    SortCarsBySpeed
+    SortCarsBySpeed,
+    SortCarsByRange,
+    SortCarsByPrice,
+    SortCarsByfastcharge,
+    SortCarsByEfficiency,
+    SortCarsByCompany,
+    SortBattery,
+    DeleteCarByID,
+    updateCar,
+    getDetailsByCarID,
+    addCar,
+    getMaxCar_Battery,
+    getMaxCar_Range,
+    getMaxCar_Efficiency,
+    getMaxCar_Acc,
+    getMaxCar_TopSpeed,
+    getAllCarRange_Acceleration,
+    getAllCarRange_Topspeed,
+    getAllCarRange_Range,
+    getAllCarRange_Efficiency,
+    getAllCarRange_Price,
+    getAllCarRange_FastCharge,
+    getAllCarbyCompany,
+    getAllCarbyBattery,
+    getAllCompanyName,
 }

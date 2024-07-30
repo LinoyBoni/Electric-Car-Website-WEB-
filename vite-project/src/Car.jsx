@@ -1,6 +1,17 @@
 import React from 'react'
 
-export default function Car({car}) {
+export default function Car({car, setIsCarDeleted}) {
+
+const deleteButtonHandler = async ()=>{
+    let carId = car.id_car
+    const response = await fetch(`http://localhost:3000/delete/${carId}`, {
+        method : "DELETE"
+    });
+    const response_json = await response.json();
+    console.log(response_json);
+    setIsCarDeleted(true)
+}
+
   return (
     <>
 
@@ -9,7 +20,7 @@ export default function Car({car}) {
         <div className ="car-list">
             <div className ="car-item">
                 <div className ="car-details">
-                    <h3>{car.Car_name}</h3>
+                    <h3>{car.company} {car.Car_name}</h3>
                     <label>{car.battery} kwh useable battery </label>
                     <br/>
                     <br/>
@@ -23,7 +34,7 @@ export default function Car({car}) {
                     <div className ="buttons">
                          <button type="Update">עדכן</button>
                          <br/>
-                         <button type="Delete">מחק פריט זה</button>
+                         <button type="Delete" onClick={deleteButtonHandler}>מחק פריט זה</button>
                     </div>
                 </div>
                 {/*<div class="car-prices">

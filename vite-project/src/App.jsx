@@ -6,14 +6,18 @@ import Top from './Top'
 import Cars from './Cars'
 import './Car.css'
 import './Top.css'
+import AddCar from './AddCar'
 
 
 function App() {
+  const [cars_list, setCarsList] = useState([]);
+  const [displayAdd, setDisplayAdd] = useState(false);
 
   return (
     <>
-      <Top/>
-      <Cars/>
+      <Top setCarsList={setCarsList}/>
+      {displayAdd ? <AddCar setDisplayAdd={setDisplayAdd}/> : ""}
+      <Cars cars_list={cars_list} setCarsList={setCarsList} setDisplayAdd={setDisplayAdd} />
     </>
   )
 }
