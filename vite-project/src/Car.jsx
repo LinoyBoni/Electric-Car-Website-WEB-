@@ -24,12 +24,12 @@ const deleteButtonHandler = async ()=>{
                     <label>{car.battery} kwh useable battery </label>
                     <br/>
                     <br/>
-                    <label>Acc 0-100: {car['acceleration..0.100.']} sec | </label>
+                    <label>Acc 0-100: {car.acceleration} sec | </label>
                     <label>Top Speed: {car.Top_speed} km/h | </label>
-                    <label>Range: {car.Range} km | </label>
+                    <label>Range: {car.Ranging} km | </label>
                     <label>Efficiency: {car.Efficiency} Wh/km | </label>
                     <label>Fastcharge: {car.Fast_charge} km/h | </label>
-                    <label>Price: {car['Price.DE.']} $ | </label>
+                    <label>Price: {car.Price} $ | </label>
 
                     <div className ="buttons">
                          <button type="Update">עדכן</button>

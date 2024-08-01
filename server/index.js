@@ -5,10 +5,9 @@ const carsDB = require('../database/carsTable');
 //const { json } = require('stream/consumers');
 
 app = express();
-
 app.use(express.static('public'));
-
 app.use(express.json());
+
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
@@ -132,11 +131,10 @@ app.get('/filters/:filterName', async(req, res)=>{
     res.status(200).send(result);
 })
 
-
 //--------------------POSTACTIONS-------------------------
 //ADD
 app.post('/add', async (req, res) => {
-    const { error, value } = validate.carDetailsValidate(req.body);
+    const { error, value } = validate.newCarDataValidation(req.body);
 
     if (error) {
         res.status(400).send(error.details.map(detail => detail.message))
@@ -205,8 +203,6 @@ app.delete('/delete/:id_car', async (req, res) => {
 
     res.status(200).send(JSON.stringify("car has been deleted"));
 });
-
-
 
 app.listen(3000, ()=> console.log(`listening to ${3000}..`));
 module.exports = app;

@@ -75,9 +75,9 @@ const resetDisplay = async() =>{
               <option value="efficiency">הצג יעילות מהנמוך לגבוה </option>
               <option value="charge">הצג טעינה מממהירה לאיטית</option>
               <option value="price">הצג מחיר מהיקר לזול</option>
-              <option value="range">מיין רכבים לפי טווח</option>
+              <option value="range">רכבים לפי טווח מהנמוך לגבוה</option>
               <option value="speed">מיין רכבים מהכי מהיר להכי איטי</option>
-              <option value="acc">הצג רכבים לפי זמן ההאצה הכי קצר להכי ארוך</option>
+              {/*<option value="acc">הצג רכבים לפי זמן ההאצה הכי קצר להכי ארוך</option>*/}
             </select>
 
             {/*----------------------מיון הדגם הכי טוב לפי בחירה------------------------------*/}

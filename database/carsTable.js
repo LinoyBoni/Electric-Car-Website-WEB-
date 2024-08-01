@@ -29,7 +29,7 @@ async function getAllCarbyCompany({company}) {
 
 //סינון לפי טווח מחירים
 async function getAllCarRange_Price({low,high}) {
-    const result = await pool.query("SELECT * FROM ev_cars.cars WHERE `Price.DE.` BETWEEN ? AND ?", 
+    const result = await pool.query("SELECT * FROM ev_cars.cars WHERE `Price` BETWEEN ? AND ?", 
         [low,high]
     );
 
@@ -56,7 +56,7 @@ async function getAllCarRange_Efficiency({low,high}) {
 
 //סינון טווח לפי הטווח של הרכב
 async function getAllCarRange_Range({low,high}) {
-    const result = await pool.query("SELECT * FROM ev_cars.cars WHERE `Range` BETWEEN ? AND ?", 
+    const result = await pool.query("SELECT * FROM ev_cars.cars WHERE `Ranging` BETWEEN ? AND ?", 
         [low,high]
     );
 
@@ -80,7 +80,7 @@ async function getAllCarRange_Topspeed({low,high}) {
 
 //מציג טווח תאוצה
 async function getAllCarRange_Acceleration({low,high}) {
-    const result = await pool.query("SELECT * FROM ev_cars.cars WHERE `acceleration..0.100.` BETWEEN ? AND ?", 
+    const result = await pool.query("SELECT * FROM ev_cars.cars WHERE `acceleration` BETWEEN ? AND ?", 
         [low,high]
     );
 
@@ -109,13 +109,13 @@ async function getMaxCar_Efficiency() {
 
 //מציג את הדגם בעל הכי טוב
 async function getMaxCar_Range() {
-    const result = await pool.query("??????");
+    const result = await pool.query("SELECT * FROM ev_cars.cars ORDER BY Ranging DESC LIMIT 1");
     return result[0];
 }
 
 //מציג את הדגם בעל נפח הסוללה הכי טוב 
 async function getMaxCar_Battery() {
-    const result = await pool.query("SELECT * FROM ev_cars.cars ORDER BY Battery DESC LIMIT 1;");
+    const result = await pool.query("SELECT * FROM ev_cars.cars ORDER BY Battery DESC LIMIT 1");
     return result[0];
 }
 //----------------------------------CRUD-------------------------------------------------
@@ -124,8 +124,9 @@ async function getMaxCar_Battery() {
 
 //Add Car to the DB
 async function addCar({battery, company, car_name, car_name_link, efficiency, fast_charge, price, range, top_speed,acceleration}) {
-    const result = await pool.query("INSERT INTO Cars (Battery, Company, Car_name, Car_name_link, Efficiency, Fast_charge, Price.DE., Range, Top_speed, acceleration..0.100) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
-        [battery, company, car_name, car_name_link, efficiency, fast_charge, price, range, top_speed,acceleration]
+    const result = await pool.query(`INSERT INTO Cars (Battery, Company, Car_name, Car_name_link, Efficiency, Fast_charge, Price, Ranging, Top_speed, acceleration)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
+        [battery, company, car_name, car_name_link, efficiency, fast_charge, top_speed]
     );
 
     return result[0];
@@ -205,13 +206,13 @@ async function SortCarsByfastcharge() {
 
 //Sort Price (high to low)
 async function SortCarsByPrice() {
-    const result = await pool.query("SELECT * FROM ev_cars.cars ORDER BY 'Price.DE.' ASC");
+    const result = await pool.query("SELECT * FROM ev_cars.cars ORDER BY Price DESC");
     return result[0];
 }
 
 //Sort Range (high to low)
 async function SortCarsByRange() {
-    const result = await pool.query("SELECT * FROM ev_cars.cars ORDER BY Cars.Range ASC");
+    const result = await pool.query("SELECT * FROM ev_cars.cars ORDER BY Cars.Ranging ASC");
     return result[0];
 }
 
@@ -223,7 +224,7 @@ async function SortCarsBySpeed() {
 
 //Sort Acceleration (low to high)
 async function SortCarsByAcc() {
-    const result = await pool.query("SELECT * FROM ev_cars.cars ORDER BY 'acceleration..0.100.' ASC");
+    const result = await pool.query("SELECT * FROM ev_cars.cars ORDER BY 'cars.acceleration' ASC");
     return result[0];
 }
 

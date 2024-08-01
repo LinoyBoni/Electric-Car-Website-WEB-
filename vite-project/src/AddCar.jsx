@@ -2,106 +2,72 @@ import React, { useState } from 'react'
 
 export default function AddCar({ setDisplayAdd }) {
 
-const [ battery, setBattery] = useState();
-const [ acceleration, setAcceleration] = useState();
-const [ car_name, setCarName] = useState();
-const [ company, setCompany] = useState();
-const [ efficiency , setEfficiency] = useState();
-const [ fast_charge, setfastCharge] = useState();
-const [ price, setPrice] = useState();
-const [ range, setRange] = useState();
-const [ top_speed, setTopSpeed] = useState();
-
-
     const cencelButtonHandler = () => {
         setDisplayAdd(false)
     }
 
-    const saveButtonHandler = async () => {
-    let formData = new FormData()
-    formData.append("battery", battery);
-    formData.append("acceleration..0.100.", acceleration)
+    const submitHandler = async (e) => {
+    e.preventDefault();
+    console.log(e.target.value);
+    const battery = e.target["battery"].value;
+    const acceleration = e.target["acceleration"].value;
+    const car_name = e.target["Car_name"].value;
+    const company = e.target["company"].value;
+    const efficiency = e.target["Efficiency"].value;
+    const fast_charge = e.target["Fast_charge"].value;
+    const range = e.target["Ranging"].value;
+    const top_speed = e.target["top_speed"].value;
+    const price = e.target["Price"].value;
+
+    let formData = new FormData();
+
+    formData.append("aaa", "aaaaa");
+    formData.append('battery', battery);
+    formData.append("acceleration", acceleration)
     formData.append("Car_name", car_name)
     formData.append("company", company)
     formData.append("Efficiency", efficiency)
     formData.append("Fast_charge", fast_charge)
-    formData.append("Price.DE.", price)
-    formData.append("Range", range)
+    formData.append("Price", price)
+    formData.append("Ranging", range)
     formData.append("Top_speed", top_speed)
+    
+    console.log("formData", formData)
 
         const response = await fetch("http://localhost:3000/add", {
-            type: "post",
+            method: "post",
             body: formData
         });
         const response_json = await response.json();
         console.log(response_json)
     }
 
-    const batteryChangeHandler = (e)=>{
-        setBattery(e.target.value)
-    }
-
-    const accelerationChangeHandler = (e)=>{
-        setAcceleration(e.target.value)
-    }
-
-    const efficiencyChangeHandler = (e)=>{
-        setEfficiency(e.target.value)
-    }
-
-    const companyChangeHandler = (e)=>{
-        setCompany(e.target.value)
-    }
-
-    const carNameChangeHandler = (e)=>{
-        setCarName(e.target.value)
-    }
-
-    const fastChargeChangeHandler = (e)=>{
-        setfastCharge(e.target.value)
-    }
-
-    const priceChangeHandler = (e)=>{
-        setPrice(e.target.value)
-    }
-
-    const rangeChangeHandler = (e)=>{
-        setRange(e.target.value)
-    }
-
-    const topSpeedChangeHandler = (e)=>{
-        setTopSpeed(e.target.value)
-    }
-
-
-
-
     return (<>
         <div>AddCar</div>
-        <form>
+        <form onSubmit={submitHandler}>
             <div>
                 <br />
-                <label> <input type='text' onChange={batteryChangeHandler} /> kwh useable battery </label>
+                <label> <input type='text' name="battery" /> kwh useable battery </label>
                 <br />
-                <label>Acc 0-100: <input type='text' onChange={accelerationChangeHandler} /> sec | </label>
+                <label>Acc 0-100: <input type='text' name='acceleration'/> sec | </label>
                 <br />
-                <label>Top Speed: <input type='text' onChange={topSpeedChangeHandler}/> km/h | </label>
+                <label>Top Speed: <input type='text' name='topSpeed'/> km/h | </label>
                 <br />
-                <label>Range: <input type='text' onChange={rangeChangeHandler} /> km | </label>
+                <label>Range: <input type='text' name='range' /> km | </label>
                 <br />
-                <label>Efficiency: <input type='text' onChange={efficiencyChangeHandler} /> Wh/km | </label>
+                <label>Efficiency: <input type='text' name='efficiency'/> Wh/km | </label>
                 <br />
-                <label>Fastcharge: <input type='text' onChange= {fastChargeChangeHandler} /> km/h | </label>
+                <label>Fastcharge: <input type='text' name='fastCharge' /> km/h | </label>
                 <br />
-                <label>car name: <input type='text' onChange={carNameChangeHandler}/> km/h | </label>
+                <label>car name: <input type='text' name='carName'/> km/h | </label>
                 <br />
-                <label>company: <input type='text' onChange = {companyChangeHandler}/> km/h | </label>
+                <label>company: <input type='text' name='company'/> km/h | </label>
                 <br />
-                <label>Price: <input type='text' onChange = {priceChangeHandler} /> $ | </label>
+                <label>Price: <input type='text' name='price' /> $ | </label>
             </div>
             <div>
                 <button onClick={cencelButtonHandler}>סגור</button>
-                <button onClick={saveButtonHandler}>הוסף רכב</button>
+                <button type='submit'>הוסף רכב</button>
             </div>
         </form>
     </>
