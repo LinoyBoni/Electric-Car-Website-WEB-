@@ -1,3 +1,5 @@
+# The project was done within a week without prior knowledge of the technologies before
+
 # Electric Cars website
 The project develops a website to display and manage information about electric vehicles. It includes features for viewing, searching, filtering, and sorting vehicle data, as well as calculating annual electricity costs based on U.S. state prices  
 ## Technologies Used
